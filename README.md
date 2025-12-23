@@ -157,15 +157,3 @@ lib/
     ├── favorites/         # Món ăn yêu thích
     ├── question/          # Khảo sát ban đầu
     └── widgets/           # UI components tái sử dụng
-```
-
-## Thông Tin Dự Án
-
-**Loại:** Tiểu Luận Chuyên Ngành  
-**Năm:** 2024  
-**Framework:** Flutter  
-**License:** MIT
-
----
-
-**Phát triển bởi Trung Doan**
