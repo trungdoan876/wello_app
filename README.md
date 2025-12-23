@@ -1,354 +1,171 @@
-# 🏃‍♂️ Wello - Your Personal Fitness Companion
+# Wello - Ứng Dụng Theo Dõi Sức Khỏe
 
-<div align="center">
+## Giới Thiệu
 
-![Wello Logo](https://img.shields.io/badge/Wello-Fitness%20App-EBCF23?style=for-the-badge&logo=flutter)
-[![Flutter](https://img.shields.io/badge/Flutter-3.9.2-02569B?style=for-the-badge&logo=flutter)](https://flutter.dev)
-[![Dart](https://img.shields.io/badge/Dart-3.0+-0175C2?style=for-the-badge&logo=dart)](https://dart.dev)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+Wello là ứng dụng di động được phát triển bằng Flutter, giúp người dùng theo dõi và quản lý sức khỏe cá nhân một cách toàn diện. Ứng dụng cung cấp các công cụ để theo dõi dinh dưỡng, tập luyện, và các chỉ số sức khỏe quan trọng.
 
-**A comprehensive fitness tracking application built with Flutter**
+## Tính Năng Chính
 
-[Features](#-features) • [Screenshots](#-screenshots) • [Installation](#-installation) • [Architecture](#-architecture) • [API](#-api-integration)
+### Xác Thực & Đăng Ký
+- Đăng ký và đăng nhập bằng email/mật khẩu
+- Đăng nhập bằng tài khoản Google
+- Xác thực OTP qua email
+- Khôi phục mật khẩu
+- Khảo sát sức khỏe ban đầu để cá nhân hóa mục tiêu
 
-</div>
+### Quản Lý Dinh Dưỡng
+- Ghi nhận bữa ăn với thông tin dinh dưỡng chi tiết
+- Theo dõi lượng calo tiêu thụ hàng ngày
+- Phân tích macro (protein, carbs, chất béo)
+- Lịch sử bữa ăn theo từng bữa trong ngày
+- Lưu món ăn yêu thích
+- Tạo món ăn tùy chỉnh
 
----
+### Theo Dõi Tập Luyện
+- Ghi nhận các bài tập với thời lượng và cường độ
+- Thư viện bài tập với giá trị MET
+- Lịch sử tập luyện và calories đốt cháy
+- Theo dõi tiến độ tập luyện
 
-## 📱 About Wello
+### Theo Dõi Nước Uống
+- Ghi nhận lượng nước uống hàng ngày
+- Nhắc nhở thông minh với lịch trình tùy chỉnh
+- Trực quan hóa mục tiêu hydration
 
-Wello is a modern, user-friendly fitness tracking application designed to help users achieve their health and wellness goals. With intuitive interfaces and powerful tracking capabilities, Wello makes it easy to monitor nutrition, exercise, and overall health progress.
+### Giám Sát Sức Khỏe
+- Tính toán BMI theo thời gian thực với cảnh báo sức khỏe
+- Theo dõi cân nặng theo thời gian
+- Tiến độ mục tiêu với biểu đồ trực quan
+- Tổng kết hoạt động hàng ngày
 
-### ✨ Key Highlights
+### Quản Lý Hồ Sơ
+- Cập nhật thông tin cá nhân (tên, tuổi, giới tính, chiều cao, cân nặng)
+- Tải ảnh đại diện
+- Điều chỉnh mục tiêu (giảm/tăng/duy trì cân nặng)
+- Thiết lập mức độ hoạt động
 
-- 🎯 **Personalized Goals** - Set and track custom fitness objectives
-- 🍎 **Nutrition Tracking** - Log meals and monitor calorie intake
-- 💪 **Workout Logging** - Track exercises and workout history
-- 💧 **Water Intake** - Stay hydrated with smart reminders
-- 📊 **Progress Analytics** - Visualize your fitness journey
-- 🔔 **Smart Notifications** - Never miss your health goals
+## Công Nghệ Sử Dụng
 
----
+### Framework & Ngôn Ngữ
+- Flutter 3.9.2
+- Dart 3.0+
 
-## 🚀 Features
+### Kiến Trúc
+- Clean Architecture với 3 lớp: Data, Domain, UI
+- Repository Pattern
+- Provider cho quản lý state
 
-### 🔐 Authentication & Onboarding
-- Email/Password registration and login
-- Google Sign-In integration
-- OTP verification for security
-- Password reset functionality
-- Comprehensive health survey for personalized recommendations
+### Thư Viện Chính
+- `provider` - Quản lý state
+- `http` - HTTP client
+- `google_fonts` - Font chữ
+- `firebase_core` - Firebase
+- `firebase_messaging` - Push notifications
+- `google_sign_in` - Đăng nhập Google
+- `shared_preferences` - Lưu trữ local
+- `image_picker` - Chọn ảnh
 
-### 🍽️ Nutrition Management
-- **Food Logging** - Track meals with detailed nutritional information
-- **Calorie Tracking** - Monitor daily calorie intake vs. targets
-- **Macro Breakdown** - Track proteins, carbs, and fats
-- **Meal History** - View past meals organized by meal type
-- **Favorites** - Save frequently eaten foods for quick logging
-- **Custom Foods** - Create and save custom meal entries
+## API Backend
 
-### 🏋️ Exercise Tracking
-- **Workout Logging** - Record exercises with duration and intensity
-- **Exercise Library** - Browse available exercises with MET values
-- **Workout History** - View past workouts and calories burned
-- **Progress Tracking** - Monitor workout consistency
+**Base URL:** `https://api.memap.id.vn:8280/wello-backend/api`
 
-### 💧 Hydration Tracking
-- **Water Intake** - Log daily water consumption
-- **Smart Reminders** - Customizable notification schedules
-- **Progress Visualization** - Track hydration goals
+### Endpoints Chính
 
-### 📊 Health Monitoring
-- **BMI Calculator** - Real-time BMI calculation with health warnings
-- **Weight Tracking** - Monitor weight changes over time
-- **Goal Progress** - Visual representation of fitness goals
-- **Daily Summary** - Comprehensive overview of daily activities
+**Authentication:**
+- `POST /auth/login` - Đăng nhập
+- `POST /auth/register` - Đăng ký
+- `POST /auth/google-login` - Đăng nhập Google
+- `POST /auth/verify-otp` - Xác thực OTP
+- `POST /auth/forgot-password` - Quên mật khẩu
 
-### 👤 Profile Management
-- **Personal Information** - Update name, age, gender, height, weight
-- **Avatar Upload** - Customize profile with photos
-- **Goal Settings** - Adjust fitness goals (lose/gain/maintain weight)
-- **Activity Level** - Set activity level for accurate calorie calculations
+**Nutrition:**
+- `GET /nutrition/daily-summary` - Tổng kết dinh dưỡng
+- `POST /nutrition/log-food` - Ghi nhận bữa ăn
+- `GET /nutrition/history` - Lịch sử ăn uống
+- `GET /food/all` - Danh sách thực phẩm
 
----
+**Exercise:**
+- `GET /workout/exercises` - Danh sách bài tập
+- `POST /workout/log` - Ghi nhận tập luyện
+- `GET /workout/daily` - Tổng kết tập luyện
 
-## 📸 Screenshots
+**Profile:**
+- `GET /user/profile` - Thông tin người dùng
+- `PUT /profile/{userId}/weight` - Cập nhật cân nặng
+- `POST /profile/{userId}/avatar/base64` - Tải ảnh đại diện
 
-<div align="center">
+**Survey:**
+- `GET /survey/questions` - Câu hỏi khảo sát
+- `POST /survey/submit` - Gửi khảo sát
+- `POST /survey/calculate-bmi` - Tính BMI
 
-| Login | Survey | Home |
-|:---:|:---:|:---:|
-| ![Login](docs/screenshots/login.png) | ![Survey](docs/screenshots/survey.png) | ![Home](docs/screenshots/home.png) |
+## Cài Đặt
 
-| Nutrition | Workout | Profile |
-|:---:|:---:|:---:|
-| ![Nutrition](docs/screenshots/nutrition.png) | ![Workout](docs/screenshots/workout.png) | ![Profile](docs/screenshots/profile.png) |
+### Yêu Cầu
+- Flutter SDK 3.9.2 trở lên
+- Android Studio hoặc VS Code
+- Android SDK (cho Android) / Xcode (cho iOS)
 
-</div>
+### Các Bước
 
----
+1. Clone repository:
+```bash
+git clone <repository-url>
+cd wello_frontend
+```
 
-## 🛠️ Installation
+2. Cài đặt dependencies:
+```bash
+flutter pub get
+```
 
-### Prerequisites
+3. Cấu hình Firebase:
+- Thêm `google-services.json` vào `android/app/`
+- Thêm `GoogleService-Info.plist` vào `ios/Runner/`
 
-- Flutter SDK (3.9.2 or higher)
-- Dart SDK (3.0 or higher)
-- Android Studio / VS Code
-- Android SDK / Xcode (for iOS)
+4. Chạy ứng dụng:
+```bash
+flutter run
+```
 
-### Quick Start
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/wello-frontend.git
-   cd wello-frontend
-   ```
-
-2. **Install dependencies**
-   ```bash
-   flutter pub get
-   ```
-
-3. **Configure Firebase**
-   - Add your `google-services.json` to `android/app/`
-   - Add your `GoogleService-Info.plist` to `ios/Runner/`
-
-4. **Update API endpoint** (if needed)
-   - Edit base URLs in `lib/data/data_source/*_remote_data_source.dart`
-
-5. **Run the app**
-   ```bash
-   flutter run
-   ```
-
-### Build Release APK
-
+5. Build APK release:
 ```bash
 flutter build apk --release
 ```
 
-The APK will be generated at: `build/app/outputs/flutter-apk/app-release.apk`
-
----
-
-## 🏗️ Architecture
-
-Wello follows **Clean Architecture** principles with clear separation of concerns:
+## Cấu Trúc Thư Mục
 
 ```
 lib/
-├── core/                   # Core utilities and constants
-│   ├── navigation/        # Route management
-│   ├── services/          # Platform services (notifications, etc.)
-│   └── utils/             # Helper functions and validators
+├── core/                   # Utilities và constants
+│   ├── navigation/        # Quản lý routes
+│   ├── services/          # Services (notifications, etc.)
+│   └── utils/             # Helper functions
 ├── data/                  # Data layer
 │   ├── data_source/       # Remote API data sources
 │   ├── models/            # Request/Response models
 │   └── repositories/      # Repository implementations
 ├── domain/                # Domain layer
 │   ├── entities/          # Business entities
-│   ├── providers/         # State management (Provider)
+│   ├── providers/         # State management
 │   └── repositories/      # Repository interfaces
 └── ui/                    # Presentation layer
-    ├── auth/              # Authentication screens
-    ├── home/              # Home dashboard
-    ├── profile/           # User profile
-    ├── meal_selection/    # Food selection and logging
-    ├── favorites/         # Favorite foods
-    ├── question/          # Onboarding survey
-    └── widgets/           # Reusable UI components
+    ├── auth/              # Màn hình xác thực
+    ├── home/              # Trang chủ
+    ├── profile/           # Hồ sơ người dùng
+    ├── meal_selection/    # Chọn và ghi nhận thực phẩm
+    ├── favorites/         # Món ăn yêu thích
+    ├── question/          # Khảo sát ban đầu
+    └── widgets/           # UI components tái sử dụng
 ```
 
-### Design Patterns
+## Thông Tin Dự Án
 
-- **Repository Pattern** - Abstraction of data sources
-- **Provider Pattern** - State management
-- **Singleton Pattern** - Service instances
-- **Factory Pattern** - Model creation
-
----
-
-## 🌐 API Integration
-
-### Base URL
-```
-Production: https://api.memap.id.vn:8280/wello-backend/api
-```
-
-### Key Endpoints
-
-#### Authentication
-- `POST /auth/login` - User login
-- `POST /auth/register` - User registration
-- `POST /auth/google-login` - Google Sign-In
-- `POST /auth/verify-otp` - OTP verification
-- `POST /auth/forgot-password` - Password reset
-
-#### Nutrition
-- `GET /nutrition/daily-summary` - Daily nutrition summary
-- `POST /nutrition/log-food` - Log food intake
-- `GET /nutrition/history` - Food intake history
-- `GET /food/all` - Get all foods
-
-#### Exercise
-- `GET /workout/exercises` - Get exercise list
-- `POST /workout/log` - Log workout
-- `GET /workout/daily` - Daily workout summary
-
-#### Profile
-- `GET /user/profile` - Get user profile
-- `PUT /profile/{userId}/fullname` - Update name
-- `PUT /profile/{userId}/weight` - Update weight
-- `POST /profile/{userId}/avatar/base64` - Upload avatar
-
-#### Survey
-- `GET /survey/questions` - Get survey questions
-- `POST /survey/submit` - Submit survey responses
-- `POST /survey/calculate-bmi` - Calculate BMI
+**Loại:** Tiểu Luận Chuyên Ngành  
+**Năm:** 2024  
+**Framework:** Flutter  
+**License:** MIT
 
 ---
 
-## 📦 Dependencies
-
-### Core
-- `flutter` - UI framework
-- `provider` - State management
-- `http` - HTTP client
-
-### UI/UX
-- `google_fonts` - Custom fonts
-- `responsive_framework` - Responsive design
-- `quickalert` - Beautiful alerts
-- `curved_navigation_bar` - Custom navigation
-
-### Firebase
-- `firebase_core` - Firebase initialization
-- `firebase_messaging` - Push notifications
-- `google_sign_in` - Google authentication
-
-### Utilities
-- `shared_preferences` - Local storage
-- `intl` - Internationalization
-- `image_picker` - Image selection
-
----
-
-## 🎨 Design System
-
-### Color Palette
-- **Primary**: `#EBCF23` (Yellow)
-- **Background**: `#FFFFFF` (White)
-- **Text Primary**: `#000000` (Black)
-- **Text Secondary**: `#666666` (Gray)
-- **Success**: `#4CAF50` (Green)
-- **Error**: `#FF6B6B` (Red)
-
-### Typography
-- **Primary Font**: Baloo 2
-- **Secondary Font**: Be Vietnam Pro
-
----
-
-## 🔧 Configuration
-
-### Environment Variables
-
-Create a `.env` file (if using):
-```env
-API_BASE_URL=https://api.memap.id.vn:8280/wello-backend/api
-GOOGLE_CLIENT_ID=your_google_client_id
-```
-
-### Firebase Setup
-
-1. Create a Firebase project
-2. Enable Authentication (Email/Password, Google)
-3. Enable Cloud Messaging
-4. Download configuration files
-5. Add to respective platform folders
-
----
-
-## 🧪 Testing
-
-```bash
-# Run unit tests
-flutter test
-
-# Run integration tests
-flutter test integration_test
-
-# Generate coverage report
-flutter test --coverage
-```
-
----
-
-## 📱 Download
-
-### Android APK
-
-Scan the QR code to download:
-
-![QR Code](docs/qr-code.png)
-
-Or download directly: [Wello APK](https://drive.google.com/file/d/1h1os2okcEhlMokU4Zq5sru7N3ol-xC4i/view)
-
-**Requirements:**
-- Android 5.0 (Lollipop) or higher
-- 100MB free storage
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 👥 Team
-
-**Developers:**
-- Trung Doan - Lead Developer
-
-**Project Type:** Tiểu Luận Chuyên Ngành
-
----
-
-## 📞 Contact
-
-- **Email**: support@wello.app
-- **Website**: https://wello.app
-- **GitHub**: https://github.com/yourusername/wello-frontend
-
----
-
-## 🙏 Acknowledgments
-
-- Flutter team for the amazing framework
-- Firebase for backend services
-- All open-source contributors
-
----
-
-<div align="center">
-
-**Made with ❤️ using Flutter**
-
-⭐ Star this repo if you find it helpful!
-
-</div>
- 
+**Phát triển bởi Trung Doan**
