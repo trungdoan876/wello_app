@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wello QR Code</title>
+    <title>Wello QR Code Generator</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         * {
@@ -15,7 +15,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #ffffff;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -43,7 +43,7 @@
 
         .subtitle {
             color: #333;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             font-size: 1.1em;
         }
 
@@ -53,21 +53,21 @@
             background: white;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-            margin: 20px 0;
+            margin: 15px 0;
             border: 2px solid #000;
         }
 
         .info {
             background: #f5f5f5;
-            padding: 20px;
+            padding: 15px 20px;
             border-radius: 10px;
-            margin-top: 30px;
+            margin-top: 20px;
             text-align: left;
             border: 1px solid #ddd;
         }
 
         .info-item {
-            margin: 10px 0;
+            margin: 8px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -83,38 +83,32 @@
             font-weight: 500;
         }
 
-        .instructions {
-            background: #f9f9f9;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-            border-left: 4px solid #000;
-        }
-
-        .instructions h3 {
-            color: #000;
-            margin-bottom: 15px;
-        }
-
-        .instructions ol {
+        .input-group {
+            margin-top: 25px;
             text-align: left;
-            padding-left: 20px;
         }
 
-        .instructions li {
-            margin: 8px 0;
+        .input-label {
+            font-weight: 600;
+            font-size: 0.95em;
             color: #333;
+            display: block;
+            margin-bottom: 8px;
         }
 
         .url-input {
             width: 100%;
-            padding: 15px;
+            padding: 12px 15px;
             border: 2px solid #000;
             border-radius: 8px;
-            margin-top: 20px;
             font-size: 14px;
-            text-align: center;
             background: #fff;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .url-input:focus {
+            border-color: #3b82f6;
         }
 
         .btn {
@@ -126,12 +120,38 @@
             cursor: pointer;
             font-size: 16px;
             margin-top: 15px;
-            transition: transform 0.2s;
+            width: 100%;
+            font-weight: 600;
+            transition: all 0.2s;
         }
 
         .btn:hover {
             transform: translateY(-2px);
             background: #333;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .instructions {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid #000;
+        }
+
+        .instructions h3 {
+            color: #000;
+            margin-bottom: 12px;
+        }
+
+        .instructions ol {
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin: 8px 0;
+            color: #333;
         }
 
         .warning {
@@ -149,11 +169,13 @@
     <div class="container">
         <h1>📱 Wello App</h1>
         <p class="subtitle">Quét mã QR để tải App</p>
+        
         <div id="qrcode"></div>
+
         <div class="info">
             <div class="info-item">
                 <span class="info-label">📦 Kích thước:</span>
-                <span class="info-value">56.3 MB</span>
+                <span class="info-value">67.2 MB</span>
             </div>
             <div class="info-item">
                 <span class="info-label">🔢 Phiên bản:</span>
@@ -161,9 +183,16 @@
             </div>
             <div class="info-item">
                 <span class="info-label">📅 Build:</span>
-                <span class="info-value">31/12/2024</span>
+                <span class="info-value">09/06/2026</span>
             </div>
         </div>
+
+        <div class="input-group">
+            <label class="input-label" for="apkUrl">🔗 URL tải APK (Google Drive / Link trực tiếp):</label>
+            <input type="text" id="apkUrl" class="url-input" placeholder="Nhập Google Drive Link hoặc Direct Link...">
+            <button class="btn" onclick="generateQR()">Tạo mã QR mới</button>
+        </div>
+
         <div class="instructions">
             <h3>📋 Hướng dẫn cài đặt:</h3>
             <ol>
@@ -173,41 +202,63 @@
                 <li>Mở file và cài đặt</li>
             </ol>
         </div>
-        <div class="warning">
-            ✅ <strong>Sẵn sàng:</strong> Mã QR đã được tạo! Quét để tải Wello App.
+        
+        <div class="warning" id="statusText">
+            ✅ <strong>Sẵn sàng:</strong> Mã QR mặc định đã được tạo! Quét để tải Wello App.
         </div>
     </div>
+
     <script>
         let qrcode = null;
+        const defaultFileId = '104UCYWEtYjXyrMQlayTH-XSs2xL7Gvf9';
+        const defaultUrl = `https://drive.google.com/uc?export=download&id=${defaultFileId}`;
+
+        // Chuyển link Google Drive thường thành link tải trực tiếp
+        function getDirectDownloadUrl(inputUrl) {
+            if (!inputUrl) return '';
+            
+            // Nếu là ID hoặc link chứa ID Google Drive
+            const driveIdMatch = inputUrl.match(/(?:id=|\/d\/|detail\/)([a-zA-Z0-9-_]{25,})/);
+            if (driveIdMatch && driveIdMatch[1]) {
+                return `https://drive.google.com/uc?export=download&id=${driveIdMatch[1]}`;
+            }
+            return inputUrl; // Giữ nguyên nếu là link khác
+        }
+
         function generateQR() {
-            const url = document.getElementById('apkUrl').value;
+            let url = document.getElementById('apkUrl').value.trim();
             if (!url) {
                 alert('Vui lòng nhập URL của file APK!');
                 return;
             }
-            // Clear previous QR code
+
+            // Xử lý link Google Drive tự động
+            const directUrl = getDirectDownloadUrl(url);
+            
+            // Xóa mã QR cũ
             document.getElementById('qrcode').innerHTML = '';
-            // Generate new QR code
+            
+            // Tạo mã QR mới
             qrcode = new QRCode(document.getElementById('qrcode'), {
-                text: url,
+                text: directUrl,
                 width: 256,
                 height: 256,
                 colorDark: '#000000',
                 colorLight: '#ffffff',
                 correctLevel: QRCode.CorrectLevel.H
             });
+
+            document.getElementById('statusText').innerHTML = '✅ <strong>Cập nhật:</strong> Mã QR mới đã được tạo từ URL của bạn!';
         }
-        // Generate QR with Google Drive direct download link
+
+        // Tạo mã QR mặc định khi load trang
         window.onload = function () {
-            // Convert Google Drive view link to direct download link
-            const fileId = '1oWH61ZA4wmCC6AzPDUwX3tSl-k1VkhIn';
-    const directDownloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
-            generateQRWithUrl(directDownloadUrl);
+            document.getElementById('apkUrl').value = `https://drive.google.com/file/d/${defaultFileId}/view?usp=drive_link`;
+            generateQRWithUrl(defaultUrl);
         }
+
         function generateQRWithUrl(url) {
-            // Clear previous QR code
             document.getElementById('qrcode').innerHTML = '';
-            // Generate new QR code
             qrcode = new QRCode(document.getElementById('qrcode'), {
                 text: url,
                 width: 256,
