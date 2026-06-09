@@ -211,19 +211,8 @@
     <script>
         let qrcode = null;
         const defaultFileId = '104UCYWEtYjXyrMQlayTH-XSs2xL7Gvf9';
-        const defaultUrl = `https://drive.google.com/uc?export=download&id=${defaultFileId}`;
-
-        // Chuyển link Google Drive thường thành link tải trực tiếp
-        function getDirectDownloadUrl(inputUrl) {
-            if (!inputUrl) return '';
-            
-            // Nếu là ID hoặc link chứa ID Google Drive
-            const driveIdMatch = inputUrl.match(/(?:id=|\/d\/|detail\/)([a-zA-Z0-9-_]{25,})/);
-            if (driveIdMatch && driveIdMatch[1]) {
-                return `https://drive.google.com/uc?export=download&id=${driveIdMatch[1]}`;
-            }
-            return inputUrl; // Giữ nguyên nếu là link khác
-        }
+        // Sử dụng link view tiêu chuẩn giúp điện thoại mở an toàn và dễ quét hơn
+        const defaultUrl = `https://drive.google.com/file/d/${defaultFileId}/view?usp=sharing`;
 
         function generateQR() {
             let url = document.getElementById('apkUrl').value.trim();
@@ -231,21 +220,18 @@
                 alert('Vui lòng nhập URL của file APK!');
                 return;
             }
-
-            // Xử lý link Google Drive tự động
-            const directUrl = getDirectDownloadUrl(url);
             
             // Xóa mã QR cũ
             document.getElementById('qrcode').innerHTML = '';
             
             // Tạo mã QR mới
             qrcode = new QRCode(document.getElementById('qrcode'), {
-                text: directUrl,
+                text: url,
                 width: 256,
                 height: 256,
                 colorDark: '#000000',
                 colorLight: '#ffffff',
-                correctLevel: QRCode.CorrectLevel.H
+                correctLevel: QRCode.CorrectLevel.M // Dùng mức sửa lỗi M giúp mã QR bớt dày đặc hơn, quét nhạy hơn
             });
 
             document.getElementById('statusText').innerHTML = '✅ <strong>Cập nhật:</strong> Mã QR mới đã được tạo từ URL của bạn!';
@@ -253,7 +239,7 @@
 
         // Tạo mã QR mặc định khi load trang
         window.onload = function () {
-            document.getElementById('apkUrl').value = `https://drive.google.com/file/d/${defaultFileId}/view?usp=drive_link`;
+            document.getElementById('apkUrl').value = defaultUrl;
             generateQRWithUrl(defaultUrl);
         }
 
@@ -265,7 +251,7 @@
                 height: 256,
                 colorDark: '#000000',
                 colorLight: '#ffffff',
-                correctLevel: QRCode.CorrectLevel.H
+                correctLevel: QRCode.CorrectLevel.M
             });
         }
     </script>
