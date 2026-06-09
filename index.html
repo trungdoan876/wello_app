@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wello QR Code Generator</title>
+    <title>Wello QR Code</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         * {
@@ -15,7 +15,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: #ffffff;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -43,7 +43,7 @@
 
         .subtitle {
             color: #333;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             font-size: 1.1em;
         }
 
@@ -53,21 +53,21 @@
             background: white;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-            margin: 15px 0;
+            margin: 20px 0;
             border: 2px solid #000;
         }
 
         .info {
             background: #f5f5f5;
-            padding: 15px 20px;
+            padding: 20px;
             border-radius: 10px;
-            margin-top: 20px;
+            margin-top: 30px;
             text-align: left;
             border: 1px solid #ddd;
         }
 
         .info-item {
-            margin: 8px 0;
+            margin: 10px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -83,54 +83,6 @@
             font-weight: 500;
         }
 
-        .input-group {
-            margin-top: 25px;
-            text-align: left;
-        }
-
-        .input-label {
-            font-weight: 600;
-            font-size: 0.95em;
-            color: #333;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .url-input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #000;
-            border-radius: 8px;
-            font-size: 14px;
-            background: #fff;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .url-input:focus {
-            border-color: #3b82f6;
-        }
-
-        .btn {
-            background: #000;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 15px;
-            width: 100%;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            background: #333;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
         .instructions {
             background: #f9f9f9;
             padding: 20px;
@@ -141,7 +93,7 @@
 
         .instructions h3 {
             color: #000;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
 
         .instructions ol {
@@ -169,9 +121,7 @@
     <div class="container">
         <h1>📱 Wello App</h1>
         <p class="subtitle">Quét mã QR để tải App</p>
-        
         <div id="qrcode"></div>
-
         <div class="info">
             <div class="info-item">
                 <span class="info-label">📦 Kích thước:</span>
@@ -186,13 +136,6 @@
                 <span class="info-value">09/06/2026</span>
             </div>
         </div>
-
-        <div class="input-group">
-            <label class="input-label" for="apkUrl">🔗 URL tải APK (Google Drive / Link trực tiếp):</label>
-            <input type="text" id="apkUrl" class="url-input" placeholder="Nhập Google Drive Link hoặc Direct Link...">
-            <button class="btn" onclick="generateQR()">Tạo mã QR mới</button>
-        </div>
-
         <div class="instructions">
             <h3>📋 Hướng dẫn cài đặt:</h3>
             <ol>
@@ -202,47 +145,18 @@
                 <li>Mở file và cài đặt</li>
             </ol>
         </div>
-        
-        <div class="warning" id="statusText">
-            ✅ <strong>Sẵn sàng:</strong> Mã QR mặc định đã được tạo! Quét để tải Wello App.
+        <div class="warning">
+            ✅ <strong>Sẵn sàng:</strong> Mã QR đã được tạo! Quét để tải Wello App.
         </div>
     </div>
-
     <script>
         let qrcode = null;
-        const defaultFileId = '104UCYWEtYjXyrMQlayTH-XSs2xL7Gvf9';
-        // Sử dụng link view tiêu chuẩn giúp điện thoại mở an toàn và dễ quét hơn
-        const defaultUrl = `https://drive.google.com/file/d/${defaultFileId}/view?usp=sharing`;
-
-        function generateQR() {
-            let url = document.getElementById('apkUrl').value.trim();
-            if (!url) {
-                alert('Vui lòng nhập URL của file APK!');
-                return;
-            }
-            
-            // Xóa mã QR cũ
-            document.getElementById('qrcode').innerHTML = '';
-            
-            // Tạo mã QR mới
-            qrcode = new QRCode(document.getElementById('qrcode'), {
-                text: url,
-                width: 256,
-                height: 256,
-                colorDark: '#000000',
-                colorLight: '#ffffff',
-                correctLevel: QRCode.CorrectLevel.M // Dùng mức sửa lỗi M giúp mã QR bớt dày đặc hơn, quét nhạy hơn
-            });
-
-            document.getElementById('statusText').innerHTML = '✅ <strong>Cập nhật:</strong> Mã QR mới đã được tạo từ URL của bạn!';
-        }
-
-        // Tạo mã QR mặc định khi load trang
         window.onload = function () {
-            document.getElementById('apkUrl').value = defaultUrl;
-            generateQRWithUrl(defaultUrl);
+            // Link Google Drive của file APK mới
+            const fileId = '104UCYWEtYjXyrMQlayTH-XSs2xL7Gvf9';
+            const driveUrl = `https://drive.google.com/file/d/${fileId}/view?usp=sharing`;
+            generateQRWithUrl(driveUrl);
         }
-
         function generateQRWithUrl(url) {
             document.getElementById('qrcode').innerHTML = '';
             qrcode = new QRCode(document.getElementById('qrcode'), {
